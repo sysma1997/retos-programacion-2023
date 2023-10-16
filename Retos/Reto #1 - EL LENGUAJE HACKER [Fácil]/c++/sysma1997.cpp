@@ -1,80 +1,26 @@
 #include <iostream>
 #include <string>
+#include <map>
 
 using namespace std;
 
-string leetAlphabet(char letter);
-string leet(string text);
+const map<char, string> leet{{'A', "4"}, {'B', "I3"}, {'C', "["}, {'D', ")"}, {'E', "3"}, {'F', "|="}, {'G', "&"}, {'H', "#"}, {'I', "1"}, {'J', ",_|"}, {'K', ">|"}, {'L', "1"}, {'M', "/\\/\\"}, {'N', "^/"}, {'O', "0"}, {'P', "|*"}, {'Q', "(_,)"}, {'R', "I2"}, {'S', "5"}, {'T', "7"}, {'U', "(_)"}, {'V', "\\/"}, {'W', "\\/\\/"}, {'X', "><"}, {'Y', "j"}, {'Z', "2"}, {'1', "L"}, {'2', "R"}, {'3', "E"}, {'4', "A"}, {'5', "S"}, {'6', "b"}, {'7', "T"}, {'8', "B"}, {'9', "g"}, {'0', "o"}};
+
+string leetTranslate(string text);
 
 int main()
 {
-    cout << leet("Sebastian") << '\n';
+    cout << leetTranslate("Aquí está un texto de prueba!") << '\n';
+    cout << leetTranslate("Sebastian Moreno Acero") << '\n';
+    cout << "Digite un texto para traducir: ";
+    string textUser{};
+    cin >> textUser;
+    cout << leetTranslate(textUser);
 
     return 0;
 }
 
-string leetAlphabet(char letter)
-{
-    switch (letter)
-    {
-    case 'A':
-        return "4";
-    case 'B':
-        return "I3";
-    case 'C':
-        return "[";
-    case 'D':
-        return ")";
-    case 'E':
-        return "3";
-    case 'F':
-        return "|=";
-    case 'G':
-        return "&";
-    case 'H':
-        return "#";
-    case 'I':
-        return "1";
-    case 'J':
-        return ",_|";
-    case 'K':
-        return ">|";
-    case 'L':
-        return "1";
-    case 'M':
-        return "/\\/\\";
-    case 'N':
-        return "^/";
-    case 'O':
-        return "0";
-    case 'P':
-        return "|*";
-    case 'Q':
-        return "(_,)";
-    case 'R':
-        return "I2";
-    case 'S':
-        return "5";
-    case 'T':
-        return "7";
-    case 'U':
-        return "(_)";
-    case 'V':
-        return "\\/";
-    case 'W':
-        return "\\/\\/";
-    case 'X':
-        return "><";
-    case 'Y':
-        return "j";
-    case 'Z':
-        return "2";
-
-    default:
-        return "";
-    }
-}
-string leet(string text)
+string leetTranslate(string text)
 {
     string result{};
 
@@ -82,7 +28,7 @@ string leet(string text)
     {
         text[i] = toupper(text[i]);
 
-        result.append(leetAlphabet(text[i]));
+        result.append((leet.find(text[i]) != leet.end()) ? leet.at(text[i]) : string(1, text[i]));
     }
 
     return result;
