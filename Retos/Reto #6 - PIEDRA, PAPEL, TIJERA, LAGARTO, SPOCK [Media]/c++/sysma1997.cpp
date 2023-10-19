@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -11,13 +12,21 @@ enum typeOfPlays
     POINT_PLAYER_2,
     INVALID
 };
+const map<string, vector<string>> rules{
+    {"🗿", {"✂️", "🦎"}},
+    {"📄", {"🗿", "🖖"}},
+    {"✂️", {"📄", "🦎"}},
+    {"🦎", {"📄", "🖖"}},
+    {"🖖", {"🗿", "✂️"}}};
+
 void game(vector<vector<string>> rounds);
 
 int main()
 {
-    game({{"🗿", "📄"}, {"✂️", "🦎"}});                           // empate
-    game({{"🗿", "📄"}, {"✂️", "🦎"}, {"✂️", "✂️"}, {"🖖", "🗿"}}); // player 1
-    game({{"👆", "📄"}, {"🖖", "🦎"}, {"✂️", "🗿"}});             // player 2
+    game({{"🗿", "📄"}, {"✂️", "🦎"}});
+    game({{"🗿", "📄"}, {"✂️", "🦎"}, {"✂️", "✂️"}, {"🖖", "🗿"}});
+    game({{"👆", "📄"}, {"🖖", "🦎"}, {"✂️", "🗿"}});
+    game({{"✂️", "🦎"}, {"🖖", "🦎"}, {"✂️", "✂️"}});
 
     return 0;
 }
@@ -29,43 +38,17 @@ void game(vector<vector<string>> rounds)
         if (player1 == player2)
             return typeOfPlays::TIE;
 
-        if (player1 == "🗿")
+        if (rules.find(player1) == rules.end() || rules.find(player2) == rules.end())
+            return typeOfPlays::INVALID;
+
+        vector<string> rule = rules.at(player1);
+        for (int i = 0; i < rule.size(); i++)
         {
-            if (player2 == "✂️" || player2 == "🦎")
+            if (player2 == rule[i])
                 return typeOfPlays::POINT_PLAYER_1;
-            else if (player2 == "📄" || player2 == "🖖")
-                return typeOfPlays::POINT_PLAYER_2;
-        }
-        else if (player1 == "📄")
-        {
-            if (player2 == "🗿" || player2 == "🖖")
-                return typeOfPlays::POINT_PLAYER_1;
-            else if (player2 == "✂️" || player2 == "🦎")
-                return typeOfPlays::POINT_PLAYER_2;
-        }
-        else if (player1 == "✂️")
-        {
-            if (player2 == "📄" || player2 == "🦎")
-                return typeOfPlays::POINT_PLAYER_1;
-            else if (player2 == "🗿" || player2 == "🖖")
-                return typeOfPlays::POINT_PLAYER_2;
-        }
-        else if (player1 == "🦎")
-        {
-            if (player2 == "📄" || player2 == "🖖")
-                return typeOfPlays::POINT_PLAYER_1;
-            else if (player2 == "🗿" || player2 == "✂️")
-                return typeOfPlays::POINT_PLAYER_2;
-        }
-        else if (player1 == "🖖")
-        {
-            if (player2 == "✂️" || player2 == "🗿")
-                return typeOfPlays::POINT_PLAYER_1;
-            else if (player2 == "📄" || player2 == "🦎")
-                return typeOfPlays::POINT_PLAYER_2;
         }
 
-        return typeOfPlays::INVALID;
+        return typeOfPlays::POINT_PLAYER_2;
     };
 
     int pointsP1{0}, pointsP2{0};
